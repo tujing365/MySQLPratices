@@ -1,0 +1,88 @@
+-- 常见函数使用
+SELECT UPPER('pop');
+SELECT NOW();
+
+SELECT SUBSTR('李莫愁爱上了陆展元',1,3) out_put;
+
+SELECT TRUNCATE(1.69999,1);
+
+SELECT YEAR(NOW()) 年;
+SELECT YEAR('1998.1.1') 年;
+
+SELECT  YEAR(hiredate) 年 FROM employees;
+
+SELECT MONTH(NOW()) 月;
+SELECT MONTHNAME(NOW()) 月;
+
+SELECT STR_TO_DATE('1998-3-2','%Y-%c-%d') AS out_put;
+
+#查询入职日期为1992--4-3的员工信息
+SELECT * FROM employees WHERE hiredate = '1992-4-3';
+
+SELECT * FROM employees WHERE hiredate = STR_TO_DATE('4-3 1992','%c-%d %Y');
+
+
+#date_format 将日期转换成字符
+
+SELECT DATE_FORMAT(NOW(),'%y年%m月%d日') AS out_put;
+
+#查询有奖金的员工名和入职日期(xx月/xx日 xx年)
+SELECT last_name,DATE_FORMAT(hiredate,'%m月/%d日 %y年') 入职日期
+FROM employees
+WHERE commission_pct IS NOT NULL;
+
+SELECT IF(10<5,'大','小');
+
+SELECT salary 原始工资,department_id,
+CASE department_id
+WHEN 30 THEN salary*1.1
+WHEN 40 THEN salary*1.2
+WHEN 50 THEN salary*1.3
+ELSE salary
+END AS 新工资
+FROM employees;
+
+
+
+1. 显示系统时间(注：日期+时间)
+SELECT NOW();
+
+2. 查询员工号，姓名，工资，以及工资提高百分之 20%后的结果（NEW salary）
+SELECT employee_id, last_name, salary, salary*1.2 新工资
+FROM employees;
+3. 将员工的姓名按首字母排序，并写出姓名的长度（LENGTH）
+SELECT last_name,LENGTH(last_name),SUBSTR(last_name,1,1) 首字母
+FROM employees
+ORDER BY 首字母;
+
+SELECT LENGTH(last_name) 长度,SUBSTR(last_name,1,1) 首字符,last_name
+FROM employees
+ORDER BY 首字符;
+4. 做一个查询，产生下面的结果
+<last_name> earns <salary> monthly but wants <salary*3>
+Dream Salary
+King earns 24000 monthly but wants 72000
+
+SELECT CONCAT(last_name,' earns ',salary,' monthly but wants ',3*salary) AS Dreams
+FROM employees;
+5. 使用'case-when'，按照下面的条件：
+SELECT last_name, job_id,
+CASE job_id
+WHEN 'AD_PRES' THEN 'A'
+WHEN 'ST_MAN'  THEN 'B'
+WHEN 'IT_PROG' THEN 'C'
+WHEN 'SA_REP'  THEN 'D'
+WHEN 'ST_CLERK' THEN 'E'
+END AS grade
+FROM employees;
+
+SELECT last_name,job_id AS  job,
+CASE job_id
+WHEN 'AD_PRES' THEN 'A' 
+WHEN 'ST_MAN' THEN 'B' 
+WHEN 'IT_PROG' THEN 'C' 
+WHEN 'SA_PRE' THEN 'D'
+WHEN 'ST_CLERK' THEN 'E'
+END AS Grade
+FROM employees
+WHERE job_id = 'AD_PRES';
